@@ -6,20 +6,38 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final etudiant = ModalRoute.of(context)!.settings.arguments as Etudiants;
+    // securité de validation
+
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args == null || args is! Etudiants) {
+      return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+          ),
+          title: const Text("Erreur", style: TextStyle(color: Colors.white)),
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        body: const Center(child: Text("Aucun étudiant trouvé.")),
+      );
+    }
+
+    final etudiant = args;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.deepPurpleAccent,
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
-
-        title: Text(
-          "Details de l'étudiant",
+        title: const Text(
+          "Détails de l'étudiant",
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -28,31 +46,25 @@ class DetailPage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(radius: 50, child: Icon(Icons.person)),
-            Container(
-              margin: EdgeInsets.all(25),
-              height: 150,
-              width: double.infinity,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.grey[200],
-              ),
-              child: ListTile(
-                title: Text(
-                  "Nom de l'étudiant : ${etudiant.name}",
-                  style: TextStyle(fontSize: 24),
-                ),
-                subtitle: Text(
-                  "Moyenne: ${etudiant.moyenne}",
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
+        child: Container(
+          margin: EdgeInsets.all(15),
+          height: 150,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.grey[200],
+          ),
+          child: ListTile(
+            leading: CircleAvatar(radius: 50, child: Icon(Icons.person)),
+            title: Text(
+              "Nom de l'étudiant : ${etudiant.name}",
+              style: const TextStyle(fontSize: 24),
             ),
-          ],
+            subtitle: Text(
+              "Moyenne : ${etudiant.moyenne}",
+              style: const TextStyle(fontSize: 24),
+            ),
+          ),
         ),
       ),
     );

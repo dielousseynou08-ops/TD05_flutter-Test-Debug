@@ -6,7 +6,7 @@ void main() {
   testWidgets('Affiche le dialogue de moyenne quand on clique sur le bouton', (
     WidgetTester tester,
   ) async {
-    // Build de l'application principale
+    // construction de l'application principale
     await tester.pumpWidget(const MyApp());
 
     // Vérifie que le bouton est présent

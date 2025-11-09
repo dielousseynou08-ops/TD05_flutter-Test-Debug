@@ -1,3 +1,4 @@
+import 'package:appnoteetudiant/pages/detail_page.dart';
 import 'package:appnoteetudiant/widgets/widget_class_etudiant.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +12,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Liste de Note Etudiant !',
-      home: HomePage(),
-      routes: {'/details': (context) => DetailPage()},
+      //home: HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+        '/details': (context) => const DetailPage(),
+      },
     );
   }
 }
 
+//début de la page d'accueil
 class HomePage extends StatelessWidget {
   final List<Etudiants> etudiants = [
     Etudiants(name: 'Alice', moyenne: 17.2),
@@ -32,6 +38,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
+        centerTitle: true,
         title: Text(
           'Liste des Etudiants !',
           style: TextStyle(
@@ -54,26 +61,28 @@ class HomePage extends StatelessWidget {
 
           const SizedBox(height: 25),
 
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: etudiants.length,
-            itemBuilder: (context, index) {
-              final etudiant = etudiants[index];
-              return Card(
-                child: ListTile(
-                  title: Text('Nom : ${etudiant.name}'),
-                  subtitle: Text('Moyenne: ${etudiant.moyenne}'),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: etudiants.length,
+              itemBuilder: (context, index) {
+                final etudiant = etudiants[index];
+                return Card(
+                  child: ListTile(
+                    title: Text('Nom : ${etudiant.name}'),
+                    subtitle: Text('Moyenne: ${etudiant.moyenne}'),
 
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/details',
-                      arguments: etudiant,
-                    );
-                  },
-                ),
-              );
-            },
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/details',
+                        arguments: etudiant,
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
           ),
 
           const SizedBox(height: 15),
@@ -106,6 +115,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
+// la fonction de de calcule de moyenne
 double calculateMoyenne(List<Etudiants> etudiants) {
   double totale = 0.0;
 
@@ -134,36 +144,4 @@ void moyenneAlertDialogue(BuildContext context, double average) {
       );
     },
   );
-}
-
-class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final etudiant = ModalRoute.of(context)!.settings.arguments as Etudiants;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
-        title: Text("Details de l'étudiant"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ListTile(
-              title: Text(
-                "Nom de l'étudiant : ${etudiant.name}",
-                style: TextStyle(fontSize: 18),
-              ),
-              subtitle: Text(
-                "Moyenne: ${etudiant.moyenne}",
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

@@ -6,7 +6,7 @@ void main() {
   testWidgets('Affiche la liste des étudiants et navigue vers les détails', (
     WidgetTester tester,
   ) async {
-    // Build du widget
+    // construction de widget
     await tester.pumpWidget(const MyApp());
 
     // Vérifie la présence du titre principal
@@ -22,7 +22,6 @@ void main() {
     // Vérifie que la page de détail est affichée
     expect(find.byType(Scaffold), findsWidgets);
 
-    // Ces deux lignes dépendent de ton DetailPage (modifie-les selon ton UI)
     expect(find.textContaining("Détails de l'étudiant"), findsOneWidget);
     expect(find.textContaining("Nom de l'étudiant : Alice"), findsOneWidget);
   });
